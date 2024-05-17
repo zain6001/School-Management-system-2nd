@@ -19,6 +19,8 @@ int search();
 void students();
 void color();
 void bscs();
+void bsse();
+void bsavm();
 void allRecord();
 void prof_LoginMenu();
 
@@ -120,7 +122,10 @@ int main()
 	cout<<"        |*|                                                 |*|         "<<endl;
 	cout<<"        |*|        5. Exit                                  |*|         "<<endl;
 	cout<<"        |*|_________________________________________________|*|         "<<endl;
+	
+	cout<<"Please enter your choice : ";
 	cin>>choice;
+	
 	if(choice==1)
 	{
 	adminReg();
@@ -506,32 +511,33 @@ cout<<"\n     *::  ************ SCHOOL MANAGEMENT SYSTEM ************  ::*    "<
 	cout<<"        |*|                                                 |*|         "<<endl;
 	cout<<"        |*|        1. Enter new record of student           |*|         "<<endl;
 	cout<<"        |*|                                                 |*|         "<<endl;
-	cout<<"        |*|        2. Fetch all Record of students          |*|         "<<endl;
+	cout<<"        |*|        2. Search Record of student              |*|         "<<endl;
 	cout<<"        |*|                                                 |*|         "<<endl;
-	cout<<"        |*|        3. Fetch BSCS Record                     |*|          "<<endl;
+	cout<<"        |*|        3. Fetch all Record of students          |*|          "<<endl;
 	cout<<"        |*|                                                 |*|         "<<endl;
-	cout<<"        |*|        4. Fetch BSSE Record                     |*|         "<<endl;
+	cout<<"        |*|        4. Fetch BSCS Record                     |*|         "<<endl;
 	cout<<"        |*|                                                 |*|         "<<endl;
-	cout<<"        |*|        5. Fetch BSAVM Record                    |*|         "<<endl;
+	cout<<"        |*|        5. Fetch BSSE Record                     |*|         "<<endl;
 	cout<<"        |*|                                                 |*|         "<<endl;
-	cout<<"        |*|        6. Delete Record of student              |*|         "<<endl;
+	cout<<"        |*|        6. Fetch BSAVM Record                    |*|         "<<endl;
 	cout<<"        |*|                                                 |*|         "<<endl;
+	cout<<"        |*|        7. Delete Record of student              |*|         "<<endl;
 	cout<<"        |*|                                                 |*|         "<<endl;
-	cout<<"        |*|        7. Return to Mainmenu                    |*|         "<<endl;
-	cout<<"        |*|                                                 |*|         "<<endl;
+	cout<<"        |*|        8. Return to Mainmenu                    |*|         "<<endl;
 	cout<<"        |*|                                                 |*|         "<<endl;
 	cout<<"        |*|_________________________________________________|*|         "<<endl;
     int choice;
+    cout<<"Enter your choice: ";
     cin>>choice;
 	if(choice==1){
 		system("cls");
 		students();
 	}
 	else if(choice==2){
-		allRecord();
+	    search();	
 	}
 	else if(choice==3){
-		search();
+		allRecord();
 	}else if(choice==4){
 		bscs();
 	}
@@ -569,22 +575,29 @@ void prof_LoginMenu(){
 	cout<<"Enter your choice: ";
 	cin>>ch;
 	if(ch=="1"){
-		
-	}else{
+		search();
+	}else if(ch=="2"){
+		allRecord();
+	}else if(ch=="3"){
+		bscs();
+	}
+	else{
 		cout<<"Invalid choice"<<endl;
 		cout<<"Returning to Mainmenu..."<<endl;
 		system("pause");
 		system("cls");
+		main();
 	}
 }
 int search(){
-	color();
+	    
     enroll search;
 	int input;
 	ifstream read("student.txt");
 	cout<<"Enter the registration id of student u want to search : ";
 	cin>>input;
-
+	cout<<endl;
+    cout<<"******************AIR UNIVERSITY CAMPUS ****************"<<endl;
 	if(read.is_open()){
 		while(!read.eof()){
 			read>>search.regId;
@@ -593,11 +606,14 @@ int search(){
 			getline(read,search.info_std.fatherName);
 			getline(read,search.courseName);
 			if(search.regId==input){
-			cout<<"------------student data----------------"<<endl;
+			cout<<"_______________________________________________________"<<endl;
+            cout<<"-----------------STUDENT DETAIL  ---------------------"<<endl;	
+	        cout<<"______________________________________________________"<<endl;
 			cout<<"Registration Id: "<<search.regId<<endl;
 			cout<<"Name of student: "<<search.info_std.name<<endl;
 			cout<<"father Name    : "<<search.info_std.fatherName<<endl;
-			cout<<"course         : "<<search.courseName<<endl;			
+			cout<<"course         : "<<search.courseName<<endl;	
+			cout<<"______________________________________________________"<<endl;		
 			cout<<endl;
 			system("pause");
 			system("cls");
@@ -616,7 +632,6 @@ int search(){
 	cout<<"Returning to main menu...."<<endl;
 	system("pause");
 	system("cls");
-	
 	main();
 	
 }
@@ -625,7 +640,10 @@ void color(){
 	system("color f1");
 }
 void bscs() {
-    cout << "-------------BSCS----------" << endl;
+         	cout<<"______________________________________________________"<<endl;
+            cout<<"---------------ALL STUDENT RECORD OF BSCS ------------"<<endl;	
+	        cout<<"______________________________________________________"<<endl;
+	        
 	enroll student;
     ifstream read("student.txt");
     if (read.is_open()) {
@@ -636,12 +654,16 @@ void bscs() {
             getline(read, student.info_std.fatherName);
             getline(read, student.courseName);
             if (student.courseName == "BSCS") {
-                cout << "------------student data----------------" << endl;
+            cout<<"_______________________________________________________"<<endl;
+            cout<<"-----------------STUDENT DETAIL  ---------------------"<<endl;	
+	        cout<<"______________________________________________________"<<endl;
                 cout << "Registration Id: " << student.regId << endl;
                 cout << "Name of student: " << student.info_std.name << endl;
-                cout << "Father Name: " << student.info_std.fatherName << endl;
-                cout << "Course: " << student.courseName << endl;
+                cout << "Father Name    : " << student.info_std.fatherName << endl;
+                cout << "Course Namr    : " << student.courseName << endl;
+            cout<<"______________________________________________________"<<endl;
                 cout << endl;
+                read.ignore();
             }
         }
     } else {
@@ -653,10 +675,6 @@ void bscs() {
 void allRecord(){
 	
 	cout << "---------AIR UNIVERSITY MULTAN CAMPUS---------" << endl;
-
-	
-	
-	
 	enroll student;
     ifstream read("student.txt");
     if (read.is_open()) {
@@ -675,7 +693,8 @@ void allRecord(){
             cout<< "Course Name    : " << student.courseName << endl;
             cout<<"______________________________________________________"<<endl;
             cout << endl;
-                
+            
+            read.ignore();   
             }
         }else{
         cout << "Student Record file error" << endl;
