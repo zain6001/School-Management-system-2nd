@@ -6,25 +6,31 @@
 //#include <iomanip>
 //#include <limits>
 #include <conio.h>   //code9
-using namespace std;
 
+using namespace std;
 //functions prototypes//
 void intmain();
-void reg();
-void login();
-void loginMenu();
+void adminReg();
+void prof_Reg();
+void adminLogin();
+void prof_Login();
+void adminLoginMenu();
 int search();
 void students();
 void color();
 void bscs();
+void allRecord();
+void prof_LoginMenu();
 
 
-class storeRoom {//login signup
+class storeRoom {          //login signup
 	string name;
 	string pass;
 	public:
-	friend void reg();//friend function
-	friend void login();
+	friend void prof_Login();
+	friend void prof_Reg();
+	friend void adminReg(); 
+	friend void adminLogin();
 	
 	void setName( string n)
 	{
@@ -50,6 +56,7 @@ class personalInfo
 	string name;
 	string fatherName;
 	public:
+	friend void allRecord();
 	friend void bscs();
 	friend int search();
 	friend void students();
@@ -74,6 +81,7 @@ class enroll:public personalInfo
 	int regId;
 	string courseName;
 	public:
+	friend void allRecord();
 	friend void bscs();
 	friend void students();
 	friend int search();
@@ -99,32 +107,32 @@ int main()
     int choice;
 	cout<<"\n     *::  ************ SCHOOL MANAGEMENT SYSTEM ************  ::*    "<<endl;
 	cout<<"         _____________________________________________________          "<<endl;
-	cout<<"        |*|----------------  LOGIN  MENU  ----------------- |*|         "<<endl;
+	cout<<"        |*|-----------------  MAIN  MENU  ----------------- |*|         "<<endl;
 	cout<<"        |*|_________________________________________________|*|         "<<endl;
 	cout<<"        |*|                                                 |*|         "<<endl;
 	cout<<"        |*|        1. Register for Admin                    |*|         "<<endl;
 	cout<<"        |*|                                                 |*|         "<<endl;
 	cout<<"        |*|        2. Login for Admin                       |*|         "<<endl;
 	cout<<"        |*|                                                 |*|         "<<endl;
-	cout<<"        |*|        3.Register for Teacher                   |*|         "<<endl;
+	cout<<"        |*|        3. Register for Professor                |*|         "<<endl;
 	cout<<"        |*|                                                 |*|         "<<endl;
-	cout<<"        |*|        4.Login for Teacher                      |*|         "<<endl;
+	cout<<"        |*|        4. Login for Professor                   |*|         "<<endl;
 	cout<<"        |*|                                                 |*|         "<<endl;
-	cout<<"        |*|        5.Exit                                   |*|         "<<endl;
+	cout<<"        |*|        5. Exit                                  |*|         "<<endl;
 	cout<<"        |*|_________________________________________________|*|         "<<endl;
 	cin>>choice;
 	if(choice==1)
 	{
-	reg();
+	adminReg();
 	}
 	else if( choice==2)
 	{
-	 login();
+	 adminLogin();
 	}
 	else if(choice==3){
-		
+	 prof_Reg();
 	}else if(choice==4){
-		
+	 prof_Login();
 	}else if(choice==5){
 	cout<<"Exiting...."<<endl;
 	cout<<"Successfully exited from the program";
@@ -136,7 +144,7 @@ int main()
 		main();
 	}
 }
-void reg()
+void adminReg()
 {
 	color();
 	storeRoom adminSignup;
@@ -193,7 +201,7 @@ void reg()
 					if(choice=="Y"||choice=="y")
 					{
 						system("cls");
-						reg();
+						adminReg();
 						break;
 					}
 					else
@@ -220,7 +228,91 @@ void reg()
 		}		
     }
 }
-void login()
+void prof_Reg()
+{
+	color();
+	storeRoom prof_Signup;
+	bool check = false;
+	cin.ignore();
+	start1:
+	cout<<"Please enter your new user name: ";
+	getline(cin,prof_Signup.name);
+	cout<<"Please enter your password:      ";
+    prof_Signup.pass = "";
+    char ch;
+    do {
+        ch = getch();
+
+        switch (ch) {
+            case 13:  // Enter key
+                cout << endl;
+                break;
+            case 8:   // Backspace
+                if (!  prof_Signup.pass.empty()) {
+                      prof_Signup.pass =   prof_Signup.pass.substr(0,   prof_Signup.pass.length() - 1);  // Workaround for pop_back()
+                    cout << "\b \b";  // Backspace and erase character
+                }
+                break;
+            default:
+                  prof_Signup.pass += ch;
+                cout << '*';  // Mask character
+        }
+    } while (ch != 13);  // Continue until Enter is pressed
+    
+	ofstream write("professorLogin.txt",ios::app);
+	ifstream read("professorLogin.txt");
+	if(!read.is_open())
+	{
+		
+		cout<<"file error of signup";
+	}
+	else
+	{
+		string readName,readPass;
+	
+		while(!read.eof())
+		{
+		
+			getline(read,readName);
+			getline(read,readPass);
+			if(prof_Signup.name==readName)
+			{
+				cout<<"User Already exists!" <<endl;
+				start2:
+					cout<<"Do u want to signup again(Y/N): ";
+					string choice;
+					cin>>choice;
+					if(choice=="Y"||choice=="y")
+					{
+						system("cls");
+						prof_Reg();
+						break;
+					}
+					else
+					{
+						main();
+					}
+				
+				
+			}
+			else
+				check = true;
+			
+		}
+		read.close();
+		if (check)
+		{
+			write<<prof_Signup.name<<endl;
+			write<<prof_Signup.pass<<endl;
+			write.close();
+			cout<<"Registration successfull!!!"<<endl;
+			system("pause");
+			system("cls");
+			main();
+		}		
+    }
+}
+void adminLogin()
 {
 	color();
 	cin.ignore();
@@ -274,7 +366,74 @@ void login()
 	   	system("pause");
 	   	system("cls");
 	   	
-	   loginMenu();
+	   adminLoginMenu();
+	   }
+	   else
+	   {system("cls");
+	   cout<<"Check your password and Try again "<<endl;
+	   cout<<"Returning to main..."<<endl;
+	   system("pause");
+	   system("cls");
+	   main();
+	   }
+	}
+	read.close();	
+}
+void prof_Login()
+{
+	color();
+	cin.ignore();
+	string readName,readPassword;
+	storeRoom prof_Login;
+	bool signupCheck;
+	ifstream read("professorLogin.txt");
+	cout<<"Please Enter your name     :";
+	getline(cin,prof_Login.name);
+	cout<<"Please enter your password :";
+	prof_Login.pass = "";
+    char ch;
+    do {
+        ch = getch();
+
+        switch (ch) {
+            case 13:  // Enter key
+                cout << endl;
+                break;
+            case 8:   // Backspace
+                if (!  prof_Login.pass.empty()) {
+                      prof_Login.pass =   prof_Login.pass.substr(0,   prof_Login.pass.length() - 1);  // Workaround for pop_back()
+                    cout << "\b \b";  // Backspace and erase character
+                }
+                break;
+            default:
+                  prof_Login.pass += ch;
+                cout << '*';  // Mask character
+        }
+    } while (ch != 13);  // Continue until Enter is pressed
+	if(!read.is_open())
+	{
+		cout<<"file error";
+	}
+	else
+	{	while(!read.eof())
+     	{
+	     getline(read,readName);
+	     getline(read,readPassword);
+	     if(prof_Login.name==readName && prof_Login.pass ==readPassword){
+	  	    signupCheck=true;
+	  	    break;
+	      }else{
+	  	    signupCheck=false;
+	       }
+	       
+       }
+	   if(signupCheck==true)
+	   {
+	   	cout<<"login successfull"<<endl;
+	   	system("pause");
+	   	system("cls");
+	   	
+	   prof_LoginMenu();
 	   }
 	   else
 	   {system("cls");
@@ -338,15 +497,30 @@ void students() //data storing
  }
 }
 
-void loginMenu(){
+void adminLoginMenu(){
 	color();
-	cout<<"1.New entry "<<endl;
-	cout<<"2.Print all data of students"<<endl;
-	cout<<"3.Search data of students "<<endl;
-	cout<<"4.Print BSCS Enrolled students"<<endl;
-	cout<<"5.Print BSSE Enrolled students"<<endl;
-	cout<<"6.Print BSAVM Enrolled students"<<endl;
-	cout<<"7.Delete data of student" <<endl;
+cout<<"\n     *::  ************ SCHOOL MANAGEMENT SYSTEM ************  ::*    "<<endl;
+	cout<<"         _____________________________________________________          "<<endl;
+	cout<<"        |*|------------------ADMIN MENU  ------------------ |*|         "<<endl;
+	cout<<"        |*|_________________________________________________|*|         "<<endl;
+	cout<<"        |*|                                                 |*|         "<<endl;
+	cout<<"        |*|        1. Enter new record of student           |*|         "<<endl;
+	cout<<"        |*|                                                 |*|         "<<endl;
+	cout<<"        |*|        2. Fetch all Record of students          |*|         "<<endl;
+	cout<<"        |*|                                                 |*|         "<<endl;
+	cout<<"        |*|        3. Fetch BSCS Record                     |*|          "<<endl;
+	cout<<"        |*|                                                 |*|         "<<endl;
+	cout<<"        |*|        4. Fetch BSSE Record                     |*|         "<<endl;
+	cout<<"        |*|                                                 |*|         "<<endl;
+	cout<<"        |*|        5. Fetch BSAVM Record                    |*|         "<<endl;
+	cout<<"        |*|                                                 |*|         "<<endl;
+	cout<<"        |*|        6. Delete Record of student              |*|         "<<endl;
+	cout<<"        |*|                                                 |*|         "<<endl;
+	cout<<"        |*|                                                 |*|         "<<endl;
+	cout<<"        |*|        7. Return to Mainmenu                    |*|         "<<endl;
+	cout<<"        |*|                                                 |*|         "<<endl;
+	cout<<"        |*|                                                 |*|         "<<endl;
+	cout<<"        |*|_________________________________________________|*|         "<<endl;
     int choice;
     cin>>choice;
 	if(choice==1){
@@ -354,7 +528,7 @@ void loginMenu(){
 		students();
 	}
 	else if(choice==2){
-		//DataStudents();
+		allRecord();
 	}
 	else if(choice==3){
 		search();
@@ -370,9 +544,42 @@ void loginMenu(){
 	}
 	
 }
+void prof_LoginMenu(){
+	color ();
+    int choice;
+	cout<<"\n     *::  ************ SCHOOL MANAGEMENT SYSTEM ************  ::*    "<<endl;
+	cout<<"         _____________________________________________________          "<<endl;
+	cout<<"        |*|------------- PROFESSOR LOGIN  MENU  ----------- |*|         "<<endl;
+	cout<<"        |*|_________________________________________________|*|         "<<endl;
+	cout<<"        |*|                                                 |*|         "<<endl;
+	cout<<"        |*|        1. Search Record of student              |*|         "<<endl;
+	cout<<"        |*|                                                 |*|         "<<endl;
+	cout<<"        |*|        2. Fetch all Record of students          |*|         "<<endl;
+	cout<<"        |*|                                                 |*|         "<<endl;
+	cout<<"        |*|        3. Fetch BSCS Record                     |*|          "<<endl;
+	cout<<"        |*|                                                 |*|         "<<endl;
+	cout<<"        |*|        4. Fetch BSSE Record                     |*|         "<<endl;
+	cout<<"        |*|                                                 |*|         "<<endl;
+	cout<<"        |*|        5. fetch BSCS Record                     |*|         "<<endl;
+	cout<<"        |*|                                                 |*|         "<<endl;
+	cout<<"        |*|        6. Return to Mainmenu                    |*|         "<<endl;
+	cout<<"        |*|                                                 |*|         "<<endl;
+	cout<<"        |*|_________________________________________________|*|         "<<endl;
+	string ch;
+	cout<<"Enter your choice: ";
+	cin>>ch;
+	if(ch=="1"){
+		
+	}else{
+		cout<<"Invalid choice"<<endl;
+		cout<<"Returning to Mainmenu..."<<endl;
+		system("pause");
+		system("cls");
+	}
+}
 int search(){
 	color();
-enroll search;
+    enroll search;
 	int input;
 	ifstream read("student.txt");
 	cout<<"Enter the registration id of student u want to search : ";
@@ -394,7 +601,7 @@ enroll search;
 			cout<<endl;
 			system("pause");
 			system("cls");
-			loginMenu();
+			adminLoginMenu();
 		    return input;
 			}
 			
@@ -409,9 +616,11 @@ enroll search;
 	cout<<"Returning to main menu...."<<endl;
 	system("pause");
 	system("cls");
+	
 	main();
 	
 }
+
 void color(){
 	system("color f1");
 }
@@ -440,4 +649,41 @@ void bscs() {
     }
 
     read.close();
+}
+void allRecord(){
+	
+	cout << "---------AIR UNIVERSITY MULTAN CAMPUS---------" << endl;
+
+	
+	
+	
+	enroll student;
+    ifstream read("student.txt");
+    if (read.is_open()) {
+        while (!read.eof()) {
+            read >> student.regId;
+            read.ignore();
+            getline(read, student.info_std.name);
+            getline(read, student.info_std.fatherName);
+            getline(read, student.courseName);
+         	cout<<"_______________________________________________________"<<endl;
+            cout<<"-----------------STUDENT DETAIL  ---------------------"<<endl;	
+	        cout<<"______________________________________________________"<<endl;
+            cout<< "Registration Id: " << student.regId << endl;
+            cout<< "Name of student: " << student.info_std.name << endl;
+            cout<< "Father Name    : " << student.info_std.fatherName << endl;
+            cout<< "Course Name    : " << student.courseName << endl;
+            cout<<"______________________________________________________"<<endl;
+            cout << endl;
+                
+            }
+        }else{
+        cout << "Student Record file error" << endl;
+    }
+    system("pause");
+    system("cls");
+    main();
+
+    read.close();
+	
 }
