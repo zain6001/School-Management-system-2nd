@@ -3,10 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-//#include <iomanip>
-//#include <limits>
 #include <conio.h>   //code9
-
 using namespace std;
 //functions prototypes//
 void intmain();
@@ -16,14 +13,15 @@ void adminLogin();
 void prof_Login();
 void adminLoginMenu();
 int search();
-void students();
+void students();//add new record
 void color();
 void bscs();
 void bsse();
 void bsavm();
 void allRecord();
 void prof_LoginMenu();
-
+void deleteRecord();
+void updateRecord();
 
 class storeRoom {          //login signup
 	string name;
@@ -33,9 +31,7 @@ class storeRoom {          //login signup
 	friend void prof_Reg();
 	friend void adminReg(); 
 	friend void adminLogin();
-	
-	void setName( string n)
-	{
+	void setName( string n){
 		name=n;
 		
 	}
@@ -57,7 +53,12 @@ class personalInfo
 {
 	string name;
 	string fatherName;
+	char gender;
 	public:
+	friend void updateRecord();
+	friend void deleteRecord();
+	friend void bsavm();
+	friend void bsse();
 	friend void allRecord();
 	friend void bscs();
 	friend int search();
@@ -78,11 +79,17 @@ class personalInfo
 };
 
 
+
+
 class enroll:public personalInfo
 {
 	int regId;
 	string courseName;
 	public:
+	friend void updateRecord();
+	friend void deleteRecord();
+	friend void bsavm();
+	friend void bsse();
 	friend void allRecord();
 	friend void bscs();
 	friend void students();
@@ -97,16 +104,16 @@ class enroll:public personalInfo
 	string getCourseName(){
 		return courseName;
 	}
-	int getRegId(){
-		return regId;
-	}
+//	s getRegId(){
+//		return regId;
+//	}
 
 };
 
 int main()
 {
     color ();
-    int choice;
+    string choice;
 	cout<<"\n     *::  ************ SCHOOL MANAGEMENT SYSTEM ************  ::*    "<<endl;
 	cout<<"         _____________________________________________________          "<<endl;
 	cout<<"        |*|-----------------  MAIN  MENU  ----------------- |*|         "<<endl;
@@ -126,24 +133,24 @@ int main()
 	cout<<"Please enter your choice : ";
 	cin>>choice;
 	
-	if(choice==1)
+	if(choice=="1")
 	{
 	adminReg();
 	}
-	else if( choice==2)
+	else if( choice=="2")
 	{
 	 adminLogin();
 	}
-	else if(choice==3){
+	else if(choice=="3"){
 	 prof_Reg();
-	}else if(choice==4){
+	}else if(choice=="4"){
 	 prof_Login();
-	}else if(choice==5){
+	}else if(choice=="5"){
 	cout<<"Exiting...."<<endl;
 	cout<<"Successfully exited from the program";
 	}
 	else{
-		cout<<"Invalid choice"<<endl<<"Returning to main menu..."<<endl;
+		cout<<"Invalid choice"<<endl;
 		system("pause");
 		system("cls");
 		main();
@@ -158,7 +165,7 @@ void adminReg()
 	start1:
 	cout<<"Please enter your new user name: ";
 	getline(cin,adminSignup.name);
-	cout<<"Please enter your password:      ";
+	cout<<"Please enter your password: ";
     adminSignup.pass = "";
     char ch;
     do {
@@ -429,19 +436,15 @@ void prof_Login()
 	  	    break;
 	      }else{
 	  	    signupCheck=false;
-	       }
-	       
+	       }   
        }
-	   if(signupCheck==true)
-	   {
+	   if(signupCheck==true){
 	   	cout<<"login successfull"<<endl;
 	   	system("pause");
 	   	system("cls");
-	   	
-	   prof_LoginMenu();
+	    prof_LoginMenu();
 	   }
-	   else
-	   {system("cls");
+	   else{system("cls");
 	   cout<<"Check your password and Try again "<<endl;
 	   cout<<"Returning to main..."<<endl;
 	   system("pause");
@@ -451,57 +454,69 @@ void prof_Login()
 	}
 	read.close();	
 }
-void students() //data storing
+void students() //add new record
 {
-  color();
   enroll student;
-  int id;
-  string name;
-  string fName, dept;
-
- start:
- cout<<"Enter the student id of student  :";
- cin>>student.regId;
- cout<<"Enter the Name of student        :";
- cin.ignore();
- getline(cin,student.info_std.name);
- cout<<"Enter father's name of student   :";
- getline(cin,student.info_std.fatherName);
- string deptt[3]={"BSCS","BSSE" ,"BSAVM"};
- cout<<"Enter department code :";
- cin>>student.courseName;
- bool check=true;
- for(int i=0;i<3;i++){
-	if(student.courseName != deptt[i]){
-		check=false;
-   	}
-  }if(check==false){
-  	cin>>student.courseName;
+  enroll obj1;
+  bool check;
+  string arr[3] = {"BSCS","BSSE","BSAVM"};
+  cout<<"Enter the student id of student  :";
+  cin>>student.regId;
+  ifstream read ("student.txt");
+  ifstream readFile ("student.txt");
+  bool check2=true;
+  while(!readFile.eof()){
+		
+        readFile>>obj1.regId;
+    	readFile.ignore();
+     	getline(readFile, obj1.info_std.name);
+        getline(readFile, obj1.info_std.fatherName);
+        getline(readFile, obj1.courseName);
+			if(student.regId==obj1.regId){
+				check2=false;				
+			}} 
+			readFile.close();
+			if(check2==false){
+				cout<<"ID ALREADY EXISTS"<<endl;
+				system("pause");
+				system("cls");
+				adminLoginMenu();
+			}else if(check2==true){
+  cin.ignore();			
+  cout<<"Enter the Name of student        :";
+  getline(cin,student.info_std.name);
+  cout<<"Enter father's name of student   :";
+  getline(cin,student.info_std.fatherName);
+  cout<<"Gender(M,F)?                     :";
+  cin>>student.info_std.gender;
+  
+  a:
+  cout<<"Enter department code (BSCS,BSSE,BSAVM) :";
+  cin>>student.courseName;
+  
+  
+  for (int i=0; i<3; i++)
+  {
+  	if (arr[i] == student.courseName)
+  	check = true;
   }
- 
+  if (check == false)
+  {
+  	cout << "Invalid Program name...Enter valid option." <<endl;
+  	goto a;
+  }
  ofstream write("student.txt",ios::app);
-
- 
- write<<student.regId<<endl;
+ write<<"\n"<<student.regId<<endl;
  write<<student.info_std.name<<endl;
  write<<student.info_std.fatherName<<endl;
- write<<student.courseName<<endl;
- cout<<"Do u want to add another record of student (Y/N)   :";
- string ch;
- cin>>ch;
- if(ch=="Y" || ch=="y")
- {
- 	goto start;
- }
- else
- {
- 	cout<<"Entering main menu...";
+ write<<student.courseName;
+ cout<<"Record added successfully"<<endl;
+	cout<<"Entering main menu...";
  	system("pause");
  	system("cls");
- 	main();
- }
 }
-
+	
+}
 void adminLoginMenu(){
 	color();
 cout<<"\n     *::  ************ SCHOOL MANAGEMENT SYSTEM ************  ::*    "<<endl;
@@ -509,7 +524,7 @@ cout<<"\n     *::  ************ SCHOOL MANAGEMENT SYSTEM ************  ::*    "<
 	cout<<"        |*|------------------ADMIN MENU  ------------------ |*|         "<<endl;
 	cout<<"        |*|_________________________________________________|*|         "<<endl;
 	cout<<"        |*|                                                 |*|         "<<endl;
-	cout<<"        |*|        1. Enter new record of student           |*|         "<<endl;
+	cout<<"        |*|        1. Add new record of student             |*|         "<<endl;
 	cout<<"        |*|                                                 |*|         "<<endl;
 	cout<<"        |*|        2. Search Record of student              |*|         "<<endl;
 	cout<<"        |*|                                                 |*|         "<<endl;
@@ -521,25 +536,48 @@ cout<<"\n     *::  ************ SCHOOL MANAGEMENT SYSTEM ************  ::*    "<
 	cout<<"        |*|                                                 |*|         "<<endl;
 	cout<<"        |*|        6. Fetch BSAVM Record                    |*|         "<<endl;
 	cout<<"        |*|                                                 |*|         "<<endl;
-	cout<<"        |*|        7. Delete Record of student              |*|         "<<endl;
+	cout<<"        |*|        7. Update  Record of student             |*|         "<<endl;
 	cout<<"        |*|                                                 |*|         "<<endl;
-	cout<<"        |*|        8. Return to Mainmenu                    |*|         "<<endl;
+	cout<<"        |*|        8. Delete Record of student              |*|         "<<endl;
+	cout<<"        |*|                                                 |*|         "<<endl;
+	cout<<"        |*|        9. Log out                               |*|         "<<endl;
 	cout<<"        |*|                                                 |*|         "<<endl;
 	cout<<"        |*|_________________________________________________|*|         "<<endl;
-    int choice;
+    string choice;
     cout<<"Enter your choice: ";
     cin>>choice;
-	if(choice==1){
+	if(choice=="1"){
 		system("cls");
 		students();
+		adminLoginMenu();
 	}
-	else if(choice==2){
-	    search();	
+	else if(choice=="2"){
+	    search();
+		adminLoginMenu();	
 	}
-	else if(choice==3){
+	else if(choice=="3"){
 		allRecord();
-	}else if(choice==4){
+		adminLoginMenu();
+	}else if(choice=="4"){
 		bscs();
+		adminLoginMenu();
+	}else if(choice=="5"){
+		bsse();
+		adminLoginMenu();
+	}else if(choice=="6"){
+		bsavm();
+		adminLoginMenu();
+	}else if(choice=="7"){
+		updateRecord();
+		adminLoginMenu();
+	}else if(choice=="8"){
+		deleteRecord();
+		adminLoginMenu();
+	}else if(choice=="9"){
+		cout<<"Log out..."<<endl;
+		system("pause");
+		system("cls");
+		main();
 	}
 	
     else{
@@ -566,9 +604,9 @@ void prof_LoginMenu(){
 	cout<<"        |*|                                                 |*|         "<<endl;
 	cout<<"        |*|        4. Fetch BSSE Record                     |*|         "<<endl;
 	cout<<"        |*|                                                 |*|         "<<endl;
-	cout<<"        |*|        5. fetch BSCS Record                     |*|         "<<endl;
+	cout<<"        |*|        5. Fetch BSAVM Record                    |*|         "<<endl;
 	cout<<"        |*|                                                 |*|         "<<endl;
-	cout<<"        |*|        6. Return to Mainmenu                    |*|         "<<endl;
+	cout<<"        |*|        6. Log out                               |*|         "<<endl;
 	cout<<"        |*|                                                 |*|         "<<endl;
 	cout<<"        |*|_________________________________________________|*|         "<<endl;
 	string ch;
@@ -576,15 +614,28 @@ void prof_LoginMenu(){
 	cin>>ch;
 	if(ch=="1"){
 		search();
+		prof_LoginMenu();
 	}else if(ch=="2"){
 		allRecord();
+		prof_LoginMenu();
 	}else if(ch=="3"){
 		bscs();
-	}
-	else{
+		prof_LoginMenu();
+	}else if(ch=="4"){
+		bsse();
+		prof_LoginMenu();
+	}else if(ch=="5"){
+		bsavm();
+		prof_LoginMenu();
+	}else if(ch=="6"){
+	cout<<"Log out"<<endl;
+	system("pause");	
+	system("cls");
+	main();
+	}else{
 		cout<<"Invalid choice"<<endl;
 		cout<<"Returning to Mainmenu..."<<endl;
-		system("pause");
+		
 		system("cls");
 		main();
 	}
@@ -592,10 +643,11 @@ void prof_LoginMenu(){
 int search(){
 	    
     enroll search;
-	int input;
+    int input=1;
+    enroll inputSearch;
 	ifstream read("student.txt");
 	cout<<"Enter the registration id of student u want to search : ";
-	cin>>input;
+	cin>>inputSearch.regId;
 	cout<<endl;
     cout<<"******************AIR UNIVERSITY CAMPUS ****************"<<endl;
 	if(read.is_open()){
@@ -605,7 +657,7 @@ int search(){
 			getline(read,search.info_std.name);
 			getline(read,search.info_std.fatherName);
 			getline(read,search.courseName);
-			if(search.regId==input){
+			if(search.regId==inputSearch.regId){
 			cout<<"_______________________________________________________"<<endl;
             cout<<"-----------------STUDENT DETAIL  ---------------------"<<endl;	
 	        cout<<"______________________________________________________"<<endl;
@@ -617,7 +669,6 @@ int search(){
 			cout<<endl;
 			system("pause");
 			system("cls");
-			adminLoginMenu();
 		    return input;
 			}
 			
@@ -632,7 +683,6 @@ int search(){
 	cout<<"Returning to main menu...."<<endl;
 	system("pause");
 	system("cls");
-	main();
 	
 }
 
@@ -640,69 +690,295 @@ void color(){
 	system("color f1");
 }
 void bscs() {
-         	cout<<"______________________________________________________"<<endl;
-            cout<<"---------------ALL STUDENT RECORD OF BSCS ------------"<<endl;	
+ 		cout<<"______________________________________________________"<<endl;
+            cout<<"---------------AIR UNIVERSITY MULTAN CAMPUS -----------"<<endl;	
+            cout<<"-----------------------BSAVM---------------------------"<<endl;	
 	        cout<<"______________________________________________________"<<endl;
 	        
 	enroll student;
     ifstream read("student.txt");
-    if (read.is_open()) {
-        while (!read.eof()) {
-            read >> student.regId;
+    if (read.is_open()){
+        while (!read.eof()){
+            read>> student.regId;
             read.ignore();
             getline(read, student.info_std.name);
             getline(read, student.info_std.fatherName);
             getline(read, student.courseName);
-            if (student.courseName == "BSCS") {
+            if (student.courseName == "BSCS"){
             cout<<"_______________________________________________________"<<endl;
             cout<<"-----------------STUDENT DETAIL  ---------------------"<<endl;	
 	        cout<<"______________________________________________________"<<endl;
                 cout << "Registration Id: " << student.regId << endl;
                 cout << "Name of student: " << student.info_std.name << endl;
                 cout << "Father Name    : " << student.info_std.fatherName << endl;
-                cout << "Course Namr    : " << student.courseName << endl;
-            cout<<"______________________________________________________"<<endl;
-                cout << endl;
-                read.ignore();
+                cout << "Course Name    : " << student.courseName << endl;
+                cout<<"______________________________________________________"<<endl;
+                cout << endl; 
+			     
             }
-        }
+		}
+        
     } else {
         cout << "Student Record file error" << endl;
     }
 
-    read.close();
+    system("pause");
+    system("cls");
+
 }
-void allRecord(){
-	
-	cout << "---------AIR UNIVERSITY MULTAN CAMPUS---------" << endl;
+void bsse() {
+         		cout<<"______________________________________________________"<<endl;
+            cout<<"---------------AIR UNIVERSITY MULTAN CAMPUS -----------"<<endl;	
+            cout<<"-----------------------BSAVM---------------------------"<<endl;	
+	        cout<<"______________________________________________________"<<endl;
+	        
 	enroll student;
     ifstream read("student.txt");
     if (read.is_open()) {
-        while (!read.eof()) {
-            read >> student.regId;
+        while (!read.eof()){
+            read>> student.regId;
             read.ignore();
             getline(read, student.info_std.name);
             getline(read, student.info_std.fatherName);
             getline(read, student.courseName);
-         	cout<<"_______________________________________________________"<<endl;
+            if (student.courseName == "BSSE"){
+            cout<<"_______________________________________________________"<<endl;
             cout<<"-----------------STUDENT DETAIL  ---------------------"<<endl;	
 	        cout<<"______________________________________________________"<<endl;
-            cout<< "Registration Id: " << student.regId << endl;
-            cout<< "Name of student: " << student.info_std.name << endl;
-            cout<< "Father Name    : " << student.info_std.fatherName << endl;
-            cout<< "Course Name    : " << student.courseName << endl;
-            cout<<"______________________________________________________"<<endl;
-            cout << endl;
-            
-            read.ignore();   
+                cout << "Registration Id: " << student.regId << endl;
+                cout << "Name of student: " << student.info_std.name << endl;
+                cout << "Father Name    : " << student.info_std.fatherName << endl;
+                cout << "Course Name    : " << student.courseName << endl;
+                cout<<"______________________________________________________"<<endl;
+                cout << endl; 
+			     
             }
-        }else{
+		}
+        
+    } else {
         cout << "Student Record file error" << endl;
     }
     system("pause");
     system("cls");
-    main();
 
-    read.close();
+}
+void bsavm() {
+         	cout<<"______________________________________________________"<<endl;
+            cout<<"---------------AIR UNIVERSITY MULTAN CAMPUS -----------"<<endl;	
+            cout<<"-----------------------BSAVM---------------------------"<<endl;	
+	        cout<<"______________________________________________________"<<endl;
+	        
+	enroll student;
+    ifstream read("student.txt");
+    if (read.is_open()) {
+        while (!read.eof()){
+            read>> student.regId;
+            read.ignore();
+            getline(read, student.info_std.name);
+            getline(read, student.info_std.fatherName);
+            getline(read, student.courseName);
+            if (student.courseName == "BSAVM"){
+            cout<<"_______________________________________________________"<<endl;
+            cout<<"-----------------STUDENT DETAIL  ---------------------"<<endl;	
+	        cout<<"______________________________________________________"<<endl;
+                cout << "Registration Id: " << student.regId << endl;
+                cout << "Name of student: " << student.info_std.name << endl;
+                cout << "Father Name    : " << student.info_std.fatherName << endl;
+                cout << "Course Name    : " << student.courseName << endl;
+                cout<<"______________________________________________________"<<endl;
+                cout << endl; 
+			     
+            }
+            
+		}
+        
+    } else {
+        cout << "Student Record file error" << endl;
+    }
+    system("pause");
+    system("cls");
+
+}
+void allRecord(){
 	
+	cout<<"______________________________________________________"<<endl;
+            cout<<"---------------AIR UNIVERSITY MULTAN CAMPUS -----------"<<endl;	
+            cout<<"-----------------------BSAVM---------------------------"<<endl;	
+	        cout<<"______________________________________________________"<<endl;
+	        
+	enroll student;
+    ifstream read("student.txt");
+    if (read.is_open()) {
+        while (!read.eof()){
+            read>> student.regId;
+            read.ignore();
+            getline(read, student.info_std.name);
+            getline(read, student.info_std.fatherName);
+            getline(read, student.courseName);
+ 
+            cout<<"_______________________________________________________"<<endl;
+            cout<<"-----------------STUDENT DETAIL  ---------------------"<<endl;	
+	        cout<<"______________________________________________________"<<endl;
+                cout << "Registration Id: " << student.regId << endl;
+                cout << "Name of student: " << student.info_std.name << endl;
+                cout << "Father Name    : " << student.info_std.fatherName << endl;
+                cout << "Course Name    : " << student.courseName << endl;
+                cout<<"______________________________________________________"<<endl;
+                cout << endl; 
+			     
+          
+            
+		}
+        
+    } else {
+        cout << "Student Record file error" << endl;
+    }
+    //read.close();
+    system("pause");
+    system("cls");
+}
+void deleteRecord(){
+	enroll search;
+	enroll student;
+	char ch;
+	cout<<"Enter id of student you want to delete the data :";
+	cin>>search.regId;
+	ifstream read;
+	read.open("student.txt");
+	ofstream write;
+	write.open("temp.txt");
+	cout<<"Do you really want to delete record of "<<search.regId <<" :";
+	cin>>ch;
+	if(ch=='Y' || ch=='y'){
+	
+	while(!read.eof()){
+		//read.ignore();
+		read>>student.regId;
+		read.ignore();
+		getline(read, student.info_std.name);
+        getline(read, student.info_std.fatherName);
+        getline(read, student.courseName);
+        if(search.regId!=student.regId){
+        	write<< "\n"<<student.regId<<endl;
+        	write<<student.info_std.name<<endl;
+        	write<<student.info_std.fatherName<<endl;
+        	write<<student.courseName;
+		}
+		//read.ignore();
+	}
+	remove("student.txt");
+	
+	rename("temp.txt","student.txt");
+	cout<<"Record deleted successfull :( "<<endl;
+	system("pause");
+	system("cls");
+	}else{
+		cout<<"Record not deleted ";
+		system("pause");
+		system("cls");
+
+	}
+}
+
+void updateRecord(){
+	bool search,check;
+	search =false;
+	check =false;
+	
+	enroll obj1,newData;
+	int reg;
+    system("cls");
+	cout << "Enter Id to update: ";
+	cin >> reg;
+	
+	ifstream readFile("student.txt");
+	
+	while(!readFile.eof()){
+		readFile>>obj1.regId;
+		readFile.ignore();
+		getline(readFile, obj1.info_std.name);
+        getline(readFile, obj1.info_std.fatherName);
+        getline(readFile, obj1.courseName);
+        if(reg==obj1.regId){
+            cout<<"_______________________________________________________"<<endl;
+            cout<<"-----------------PREVIOUS STUDENT DETAIL --------------"<<endl;	
+	        cout<<"______________________________________________________"<<endl;
+        	cout<<"ID         :"<<obj1.regId<<endl;
+        	cout<<"Name       :"<<obj1.info_std.name<<endl;
+        	cout<<"Father Name:"<<obj1.info_std.fatherName<<endl;
+        	cout<<"Course     :"<<obj1.courseName<<endl;
+        	cout<<"                                                      "<<endl;
+        	cout<<"______________________________________________________"<<endl;
+        	
+        	
+            search=true;
+	    } 
+    }
+    readFile.close();
+	
+	if(search==false){
+    cout<<"Student dont exist"<<endl;
+   	system("pause");
+   	system("cls");	
+	}
+	else 
+	{ // input
+        string arr[3] = {"BSCS","BSSE","BSAVM"};
+        cin.ignore();
+        cout<<"_______________________________________________________"<<endl;
+        cout<<"--------------------ENTER NEW DETAIL -----------------"<<endl;	
+	    cout<<"______________________________________________________"<<endl;
+        
+	   	cout<<"Enter Name                          :";
+		getline(cin, newData.info_std.name);
+	    cout<<"Enter father Name                   :";
+        getline(cin, newData.info_std.fatherName);
+        a:
+        cout<<"Enter Course Name (BSCS,BSSE,BSAVM) :";
+        getline(cin, newData.courseName);
+        for (int i=0; i<3; i++){
+  	    if (arr[i] == newData.courseName)
+        check = true;
+        }if (check == false){
+  	    cout << "Invalid Program name...Enter valid option." <<endl;
+  	    goto a;
+         }
+         
+         readFile.open("student.txt");
+   		 ofstream write("temp.txt");
+    
+    while(!readFile.eof()){
+	    readFile>>obj1.regId;
+    	readFile.ignore();
+     	getline(readFile, obj1.info_std.name);
+        getline(readFile, obj1.info_std.fatherName);
+        getline(readFile, obj1.courseName);
+       if(reg!=obj1.regId){
+       write<< "\n"<<obj1.regId<<endl;
+       write<<obj1.info_std.name<<endl;
+       write<<obj1.info_std.fatherName<<endl;
+       write<<obj1.courseName;
+	  }else{
+	 write<< "\n"<<reg<<endl;  
+	write<<newData.info_std.name<<endl;
+  	write<<newData.info_std.fatherName<<endl;
+    write<<newData.courseName;
+	}
+}
+readFile.close();
+write.close();
+
+	remove("student.txt");
+	rename("temp.txt","student.txt");
+	cout<<"Record updated succesfully "<<endl;
+	system("pause");
+	system("cls");	
+	
+		
+		
+		
+	}
+	
+
+
 }
