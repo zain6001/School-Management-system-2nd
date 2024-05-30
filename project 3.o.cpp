@@ -897,16 +897,56 @@ class searchRecord:public manipulateRecord{
 	
 };
 class attendance:public enroll{
+	char attendance;
+	
+	bool check;
+	
 	public:
+		
 		void mark(){
-		bool check=false;
-		cout<<"Enter the registration id of student you want to mark attendance : ";
-		int id;
-		cin>>id;
+		bool check2;
+		string dateToday=__DATE__;	
+		cout<<"1. Mark BSCS   ATTENDANCE"<<endl;
+		cout<<"2. Mark BSSE   ATTENDANCE"<<endl;
+		cout<<"3. Mark BSAVM  ATTENDANCE"<<endl;
+		cout<<"4. Back"<<endl;
+		
+		string ch;
+		cout<<"Please enter your choice : ";
+		cin>>ch;	
+		if(ch=="1"){
+        
+		ofstream write("attendance.txt" , ios::app);
+	    ifstream readAtt("attendance.txt");
+	    if(readAtt.is_open()){
+	    	while(!readAtt.eof()){
+	    		readAtt>>regId;
+	    		readAtt.ignore();
+	    		getline(readAtt,name);
+	    		readAtt>>attendance;
+	    		readAtt.ignore();
+	    		getline(readAtt,time);
+	    		getline(readAtt,date);
+	    		getline(readAtt,courseName);
+	    		if(date==dateToday && courseName=="BSCS"){
+	    		  check=false;
+	    			break;
+				}else{
+				check=true;
+				}
+			}
+		}else{
+			cout<<"file error ";;
+		}readAtt.close();
+		if(check==false){
+			cout<<"you have already marked attendance of this date: "<<__DATE__<<endl;
+			system("pause");
+			system("cls");
+		}else{
+		
 		ifstream read("student.txt");
 		if(read.is_open()){
 			while(!read.eof()){
-		
 			read>>regId;
 			read.ignore();
 			getline(read,name);
@@ -916,47 +956,324 @@ class attendance:public enroll{
 			getline(read,courseName);
 			getline(read,time);
 			getline(read,date);
-			if(id==regId){
+			if(courseName=="BSCS"){
 		        cout<<"_______________________________________________________"<<endl;
                 cout<<"-----------------STUDENT DETAIL  ---------------------"<<endl;	
 	            cout<<"______________________________________________________"<<endl;
                 cout << "Registration Id: " << regId << endl;
                 cout << "Name of student: " << name << endl;
-                cout << "Father Name    : " << fatherName << endl;
-                cout<<  "Gender         : " <<gender <<endl;
-                cout << "Course Name    : " <<courseName << endl;
-                cout<<  "Time           : " <<time<<endl;
-                cout<<  "Date           : " <<date<<endl;
+                cout << "Mark (A/P)     : ";
+				cin>>attendance;
                 cout<<"______________________________________________________"<<endl;
                 cout << endl; 
-			    check=true;
-			    break;
-            }	}
-			if(check==true){
-			
-			ofstream write ("attendance.txt",ios :: app);
-			int att;
-			cout<<"Enter the attendance in percentage : ";
-			cin>>att;
-			
-			write<<endl<<id<<endl;
-			write<<att<<endl;
-			write<<__TIME__<<endl;
-			write<<__DATE__;
-			
-			system("pause");
-			system("cls");
+                
+                write<<endl<<regId<<endl;
+                write<<name<<endl;
+                write<<attendance<<endl;
+                write<<__TIME__<<endl;
+                write<<__DATE__<<endl;
+                write<<courseName;
+                
+                
+                check2=true;
+
+            }else{
+			    check2=false;
+			}	
+			}read.close();
+            
+            if(check2==false){
+            	cout<<"Student Record do not exist";
+            	system("pause");
+			    system("cls");	
 			}else{
-				cout<<"Student does not exist";
-		     	system("pause");
-		     	system("cls");
-				
+				cout<<"Attendance marked"<<endl;
+				system("pause");
+			    system("cls");	
 			}
+            
+
+
 			
 		}else{
 			cout<<"File error"<<endl;
 		}
+	}
+}//condition 1 ends
+else if(ch=="2"){
+        
+		ofstream write("attendance.txt" , ios::app);
+	    ifstream readAtt("attendance.txt");
+	    if(readAtt.is_open()){
+	    	while(!readAtt.eof()){
+	    		readAtt>>regId;
+	    		readAtt.ignore();
+	    		getline(readAtt,name);
+	    		readAtt>>attendance;
+	    		readAtt.ignore();
+	    		getline(readAtt,time);
+	    		getline(readAtt,date);
+	    		getline(readAtt,courseName);
+	    		if(date==dateToday && courseName=="BSSE"){
+	    		  check=false;
+	    			break;
+				}else{
+				check=true;
+				}
+			}
+		}else{
+			cout<<"file error ";;
+		}readAtt.close();
+		if(check==false){
+			cout<<"you have already marked attendance of this date: "<<__DATE__<<endl;
+			system("pause");
+			system("cls");
+		}else{
+		
+		ifstream read("student.txt");
+		if(read.is_open()){
+			while(!read.eof()){
+			read>>regId;
+			read.ignore();
+			getline(read,name);
+			getline(read,fatherName);
+			read>>gender;
+			read.ignore();
+			getline(read,courseName);
+			getline(read,time);
+			getline(read,date);
+			if(courseName=="BSSE" ){
+		        cout<<"_______________________________________________________"<<endl;
+                cout<<"-----------------STUDENT DETAIL  ---------------------"<<endl;	
+	            cout<<"______________________________________________________"<<endl;
+                cout << "Registration Id: " << regId << endl;
+                cout << "Name of student: " << name << endl;
+                cout << "Mark (A/P)     : ";
+				cin>>attendance;
+                cout<<"______________________________________________________"<<endl;
+                cout << endl; 
+                
+                write<<endl<<regId<<endl;
+                write<<name<<endl;
+                write<<attendance<<endl;
+                write<<__TIME__<<endl;
+                write<<__DATE__<<endl;
+                write<<courseName;
+                
+                
+                check2=true;
+
+            }else{
+			    check2=false;
+			}	
+			}read.close();
+            
+            if(check2==false){
+            	cout<<"Student Record do not exist";
+            	system("pause");
+			    system("cls");	
+			}else{
+				cout<<"Attendance marked"<<endl;
+				system("pause");
+			    system("cls");	
+			}
+            
+
+
+			
+		}else{
+			cout<<"File error"<<endl;
 		}
+	}
+}
+//condition 2 ends
+else if(ch=="3"){
+        
+		ofstream write("attendance.txt" , ios::app);
+	    ifstream readAtt("attendance.txt");
+	    if(readAtt.is_open()){
+	    	while(!readAtt.eof()){
+	    		readAtt>>regId;
+	    		readAtt.ignore();
+	    		getline(readAtt,name);
+	    		readAtt>>attendance;
+	    		readAtt.ignore();
+	    		getline(readAtt,time);
+	    		getline(readAtt,date);
+	    		getline(readAtt,courseName);
+	    		if(date==dateToday && courseName=="BSAVM"){
+	    		  check=false;
+	    			break;
+				}else{
+				check=true;
+				}
+			}
+		}else{
+			cout<<"file error ";;
+		}readAtt.close();
+		if(check==false){
+			cout<<"you have already marked attendance of this date: "<<__DATE__<<endl;
+			system("pause");
+			system("cls");
+		}else{
+		
+		ifstream read("student.txt");
+		if(read.is_open()){
+			while(!read.eof()){
+			read>>regId;
+			read.ignore();
+			getline(read,name);
+			getline(read,fatherName);
+			read>>gender;
+			read.ignore();
+			getline(read,courseName);
+			getline(read,time);
+			getline(read,date);
+			if(courseName=="BSAVM"){
+		        cout<<"_______________________________________________________"<<endl;
+                cout<<"-----------------STUDENT DETAIL  ---------------------"<<endl;	
+	            cout<<"______________________________________________________"<<endl;
+                cout << "Registration Id: " << regId << endl;
+                cout << "Name of student: " << name << endl;
+                cout << "Mark (A/P)     : ";
+				cin>>attendance;
+                cout<<"______________________________________________________"<<endl;
+                cout << endl; 
+                
+                write<<endl<<regId<<endl;
+                write<<name<<endl;
+                write<<attendance<<endl;
+                write<<__TIME__<<endl;
+                write<<__DATE__<<endl;
+                write<<courseName;
+                
+                
+                check2=true;
+
+            }else{
+			    check2=false;
+			}	
+			}read.close();
+            
+            if(check2==false){
+            	cout<<"Student Record do not exist";
+            	system("pause");
+			    system("cls");	
+			}else{
+				cout<<"Attendance marked"<<endl;
+				system("pause");
+			    system("cls");	
+			}
+            
+
+
+			
+		}else{
+			cout<<"File error"<<endl;
+		}
+	}
+}//cnd 3 ends
+else if(ch=="4"){
+	
+	system("pause");
+	system("cls");
+}else{
+	cout<<"Invalid input";
+	system("pause");
+	system("cls");
+	mark();
+}
+
+}//func. end
+
+void displayAttendance(){
+	cout<<"1. BSCS"<<endl;
+	cout<<"2. BSSE"<<endl;
+	cout<<"3. BSAVM"<<endl;
+	cout<<"4. Back "<<endl;
+	string ch;
+	cout<<"Enter your choice : ";
+	cin>>ch;
+	if(ch=="1"){
+	
+	ifstream read("attendance.txt");
+	if(read.is_open()){
+			cout<<"_______________________________________________________"<<endl;
+            cout<<"-------------------------BSCS--------------------------"<<endl;	
+	        cout<<"______________________________________________________"<<endl;
+		while(!read.eof()){
+			read>>regId;
+			read.ignore();
+			getline(read,name);
+			read>>attendance;
+			read.ignore();
+			getline(read,time);
+			getline(read,date);
+			getline(read,courseName);
+			
+			if(courseName=="BSCS"){
+		    cout<<"_______________________________________________________"<<endl;
+            cout<<"-----------------STUDENT DETAIL  ---------------------"<<endl;
+			cout<<" -------------------"<<date<<"-------------------------"<<endl;
+	        cout<<"______________________________________________________"<<endl;
+                cout << "Registration Id : " << regId << endl;
+                cout << "Name of student : " <<name <<endl;
+                cout<<  "Attendance      :"<<attendance<<endl;
+                cout<<"______________________________________________________"<<endl;
+                cout << endl; 
+			     
+			}
+		}
+		system("pause");
+		system("cls");
+		
+		
+	}else{
+		cout<<"File error";
+	}
+	
+ }  //conditon 1 ends
+ else if(ch=="2"){
+ 	{
+	
+	ifstream read("attendance.txt");
+	if(read.is_open()){
+			cout<<"_______________________________________________________"<<endl;
+            cout<<"-------------------------BSSE--------------------------"<<endl;	
+      		cout<<" --------------------"<<date<<"------------------------"<<endl;    
+	        cout<<"_______________________________________________________"<<endl;
+	        cout<<"ID         "<<"NAME             "<<"  ATTENDANCE"<<endl;
+		while(!read.eof()){
+			read>>regId;
+			read.ignore();
+			getline(read,name);
+			read>>attendance;
+			read.ignore();
+			getline(read,time);
+			getline(read,date);
+			getline(read,courseName);
+			
+			if(courseName=="BSSE"){
+            cout<<" "<<regId<<"       "<<" "<<name<<"                    "<<" "<<attendance<< endl;
+            cout<<"______________________________________________________"<<endl;
+            cout << endl; 
+			     
+			}
+		}
+		system("pause");
+		system("cls");
+		
+		
+	}else{
+		cout<<"File error";
+	}
+	
+ }
+ }
+}//func. ends
+
+
+
 };
 int main(){
  color ();
@@ -983,10 +1300,12 @@ int main(){
 	if(choice=="1")
 	{
 	obj1.adminReg();
+	main();
 	}
 	else if( choice=="2")
 	{
 	obj1.adminLogin();
+	main();
 	}
 	else if(choice=="3"){
 	obj1.prof_Reg();
@@ -1131,6 +1450,8 @@ void prof_LoginMenu(){
 		prof_LoginMenu();
 		
 	}else if(ch=="7"){
+		attendance.displayAttendance();
+		prof_LoginMenu();
 		
 	}else if(ch=="8"){
 	cout<<"Log out"<<endl;
