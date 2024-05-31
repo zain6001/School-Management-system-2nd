@@ -83,9 +83,9 @@ class storeRoom {          //login signup
 	bool check = false;
 	cin.ignore();
 	start1:
-	cout<<"Please enter your new user name: ";
+	cout<<"Please enter your new user name : ";
 	getline(cin,prof_Signup.name);
-	cout<<"Please enter your password:      ";
+	cout<<"Please enter your password      :";
     prof_Signup.pass = "";
     char ch;
     do {
@@ -486,7 +486,6 @@ class manipulateRecord:public studentRecord{
 	string ch;
 	cout<<"Enter id of student you want to delete the data :";
 	cin>>id;
-	ifstream read("student.txt");
 	ifstream readFile("student.txt");
 	ofstream write("temp.txt");
 	if(readFile.is_open()){
@@ -524,20 +523,20 @@ class manipulateRecord:public studentRecord{
 	cout<<"file not found"<<endl;
 	}
 	if(flag==true){
-	
+	readFile.open("student.txt");
 	cout<<"Do you really want to delete record of (y/n) "<<id <<" : ";
 	cin>>ch;
 	if(ch=="Y" || ch=="y"){
-	while(!read.eof()){
-		read>>regId;
-		read.ignore();
-		getline(read,name);
-        getline(read,fatherName);
-        read>>gender;
-        read.ignore();
-        getline(read,courseName);
-        getline(read,time);
-        getline(read,date);
+	while(!readFile.eof()){
+		readFile>>regId;
+		readFile.ignore();
+		getline(readFile,name);
+        getline(readFile,fatherName);
+        readFile>>gender;
+        readFile.ignore();
+        getline(readFile,courseName);
+        getline(readFile,time);
+        getline(readFile,date);
         if(id!=regId){
         	write<<endl<<regId<<endl;
         	write<<name<<endl;
@@ -548,7 +547,7 @@ class manipulateRecord:public studentRecord{
         	write<<date;
 		}
 	}
-	read.close();
+	readFile.close();
 	write.close();
 	remove("student.txt");
 	rename("temp.txt","student.txt");
@@ -653,22 +652,22 @@ void updateRecord(){
   	    goto a;
         }
          
-         ifstream read ("student.txt");
+         readFile.open("student.txt");
    		 ofstream write("temp.txt");
    		 
    		if (search)
    		{
 		   
-    while(!read.eof()){
-	    read>>regId;
-    	read.ignore();
-     	getline(read, name);
-        getline(read,fatherName);
-        read>>gender;
-        read.ignore();
-        getline(read, courseName);
-        getline(read,time);
-        getline(read,date);
+    while(!readFile.eof()){
+	    readFile>>regId;
+    	readFile.ignore();
+     	getline(readFile, name);
+        getline(readFile,fatherName);
+        readFile>>gender;
+        readFile.ignore();
+        getline(readFile, courseName);
+        getline(readFile,time);
+        getline(readFile,date);
        if(id!=regId){
        write<<endl<<regId<<endl;
        write<<name<<endl;
@@ -688,7 +687,7 @@ void updateRecord(){
 	}
 }
 }
-read.close();
+readFile.close();
 write.close();
 	remove("student.txt");
 	rename("temp.txt","student.txt");
@@ -895,12 +894,16 @@ class attendance:public enroll{
 	public:
 		
 		void mark(){
-		bool check2;
+		system("cls");
+		bool check2=false;
 		string dateToday=__DATE__;	
-		cout<<"1. Mark BSCS   ATTENDANCE"<<endl;
-		cout<<"2. Mark BSSE   ATTENDANCE"<<endl;
-		cout<<"3. Mark BSAVM  ATTENDANCE"<<endl;
-		cout<<"4. Back"<<endl;
+	cout<<"__________________________"<<endl;
+	cout<<"|__DISPLAY ATTENDANCE___|"<<endl;
+	cout<<"|"<<"1. BSCS "<<"  |"<<endl;
+	cout<<"|"<<"2. BSSE "<<"  |"<<endl;
+	cout<<"|"<<"3. BSAVM"<<"  |"<<endl;
+	cout<<"|"<<"4. Back "<<"  |"<<endl;
+	cout<<"__________________________"<<endl;
 		
 		string ch;
 		cout<<"Please enter your choice : ";
@@ -968,13 +971,8 @@ class attendance:public enroll{
                 write<<__TIME__<<endl;
                 write<<__DATE__<<endl;
                 write<<courseName;
-                
-                
                 check2=true;
-
-            }else{
-			    check2=false;
-			}	
+            }	
 			}read.close();
             
             if(check2==false){
@@ -1058,9 +1056,7 @@ else if(ch=="2"){
                 
                 check2=true;
 
-            }else{
-			    check2=false;
-			}	
+            }	
 			}read.close();
             
             if(check2==false){
@@ -1104,7 +1100,7 @@ else if(ch=="3"){
 				}
 			}
 		}else{
-			cout<<"file error ";;
+			cout<<"file error ";
 		}readAtt.close();
 		if(check==false){
 			cout<<"you have already marked attendance of this date: "<<__DATE__<<endl;
@@ -1145,9 +1141,7 @@ else if(ch=="3"){
                 
                 check2=true;
 
-            }else{
-			    check2=false;
-			}	
+            }	
 			}read.close();
             
             if(check2==false){
@@ -1182,12 +1176,14 @@ else if(ch=="4"){
 }//func. end
 
 void displayAttendance(){
-	system("pause");
 	system("cls");
-	cout<<"1. BSCS"<<endl;
-	cout<<"2. BSSE"<<endl;
-	cout<<"3. BSAVM"<<endl;
-	cout<<"4. Back "<<endl;
+	cout<<"__________________________"<<endl;
+	cout<<"|__DISPLAY ATTENDANCE___|"<<endl;
+	cout<<"|"<<"1. BSCS "<<"  |"<<endl;
+	cout<<"|"<<"2. BSSE "<<"  |"<<endl;
+	cout<<"|"<<"3. BSAVM"<<"  |"<<endl;
+	cout<<"|"<<"4. Back "<<"  |"<<endl;
+	cout<<"__________________________"<<endl;
 	string ch;
 	cout<<"Enter your choice : ";
 	cin>>ch;
@@ -1214,7 +1210,7 @@ void displayAttendance(){
 	        cout<<"______________________________________________________"<<endl;
                 cout << "Registration Id : " << regId << endl;
                 cout << "Name of student : " <<name <<endl;
-                cout<<  "Attendance      :"<<attendance<<endl;
+                cout<<  "Attendance      : "<<attendance<<endl;
                 cout<<"______________________________________________________"<<endl;
                 cout << endl; 
 			     
@@ -1252,7 +1248,7 @@ void displayAttendance(){
 	        cout<<"______________________________________________________"<<endl;
                 cout << "Registration Id : " << regId << endl;
                 cout << "Name of student : " <<name <<endl;
-                cout<<  "Attendance      :"<<attendance<<endl;
+                cout<<  "Attendance      : "<<attendance<<endl;
                 cout<<"______________________________________________________"<<endl;
                 cout << endl; 
 			     
@@ -1289,7 +1285,7 @@ void displayAttendance(){
 	        cout<<"______________________________________________________"<<endl;
                 cout << "Registration Id : " << regId << endl;
                 cout << "Name of student : " <<name <<endl;
-                cout<<  "Attendance      :"<<attendance<<endl;
+                cout<<  "Attendance      : "<<attendance<<endl;
                 cout<<"______________________________________________________"<<endl;
                 cout << endl; 
 			     
