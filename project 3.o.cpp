@@ -561,9 +561,10 @@ class manipulateRecord:public studentRecord{
 
 
 void updateRecord(){
-	bool search,check;
+	bool search,check1, check2;
 	search =false;
-	check =false;
+	check1 =false;
+	check2 =false;
 	int id;
 	cout << "Enter Id to update: ";
 	cin >> id;
@@ -624,21 +625,29 @@ void updateRecord(){
         cout<<"Enter Gender          (M/F)         :";
         cin>>newGender;
         for (int i=0; i<3; i++){
-  	    if (gen[i] == newGender)
-        check = true;
-        }if (check == false){
+  	    if (gen[i] == newGender){
+  	    	check1 = true;
+        break;
+		  }
+        
+        }if (check1 == false){
   	    cout << "Enter valid option." <<endl;
   	    goto b;
          }
-      
-        a:
-        cin.ignore();
+      cin.ignore();
+        
+		a:
+        
         cout<<"Enter Course Name (BSCS,BSSE,BSAVM) :";
         getline(cin, newCourse);
         for (int i=0; i<3; i++){
   	    if (arr[i] == newCourse)
-        check = true;
-        }if (check == false){
+  	    {
+  	    	
+        check2 = true;
+        break;
+		  }
+        }if (check2 == false){
   	    cout << "Enter valid option..." <<endl;
   	    goto a;
         }
