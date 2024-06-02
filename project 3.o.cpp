@@ -11,7 +11,6 @@ void color();
 void prof_LoginMenu();
 void adminLoginMenu();
 
-//
 
 class storeRoom {          //login signup
 	string name;
@@ -898,24 +897,28 @@ class Attendance:public enroll{
 		void mark(){
 		system("cls");
 		bool check2=false;
-		string dateToday=__DATE__;	
-	cout<<"__________________________"<<endl;
-	cout<<"|___MARK ATTENDANCE___|"<<endl;
-	cout<<"|"<<"1. BSCS "<<"     |"<<endl;
-	cout<<"|"<<"2. BSSE "<<"     |"<<endl;
-	cout<<"|"<<"3. BSAVM"<<"     |"<<endl;
-	cout<<"|"<<"4. Back "<<"     |"<<endl;
-	cout<<"__________________________"<<endl;
+		string dateToday=__DATE__;
+		
+	cout<<"______________________________________________"<<endl;
+	cout<<"|*|____________MARK ATTENDANCE_____________|*|"<<endl;
+	cout<<"|*|1. BSCS                                 |*|"<<endl;
+	cout<<"|*|2. BSSE                                 |*|"<<endl;
+	cout<<"|*|3. BSAVM                                |*|"<<endl;
+	cout<<"|*|4. Back                                 |*|"<<endl;
+	cout<<"|*|________________________________________|*|"<<endl;
 		
 		string ch;
 		cout<<"Please enter your choice : ";
 		cin>>ch;	
 		if(ch=="1"){
-        
+        p=0;
+        a=0;
+        l=0;
 		ofstream write("attendance.txt" , ios::app);
 	    ifstream readAtt("attendance.txt");
 	    if(readAtt.is_open()){
 	    	while(!readAtt.eof()){
+	    		
 	    		readAtt>>regId;
 	    		readAtt.ignore();
 	    		getline(readAtt,name);
@@ -943,7 +946,7 @@ class Attendance:public enroll{
 		char attArr[]={'A','P','a','p'};
 		bool f;
 		if(read.is_open()){
-			ofstream writeReport("attendanceReport.txt");
+			ofstream writeReport("attendanceReport.txt",ios::app);
 			while(!read.eof()){
 			read>>regId;
 			read.ignore();
@@ -965,7 +968,7 @@ class Attendance:public enroll{
 				cin>>attendance;
 				if(attendance=="p"||attendance=="P"){
 					p++;
-				}else if(attendance=="a",attendance=="A"){
+				}else if(attendance=="a"||attendance=="A"){
 					a++;
 				}else{
 					l++;
@@ -986,7 +989,8 @@ class Attendance:public enroll{
             }	
 			}read.close();
 			write.close();
-			writeReport<<endl<<courseName<<endl;
+			//courseName="BSCS";// confused loop :(
+			writeReport<<endl<<"BSCS"<<endl;
 			writeReport<<__DATE__<<endl;
 			writeReport<<p<<endl;
 			writeReport<<a<<endl;
@@ -1012,7 +1016,9 @@ class Attendance:public enroll{
 	}
 }//condition 1 ends
 else if(ch=="2"){
-        
+        p=0;
+        a=0;
+        l=0;
 		ofstream write("attendance.txt" , ios::app);
 	    ifstream readAtt("attendance.txt");
 	    if(readAtt.is_open()){
@@ -1040,7 +1046,7 @@ else if(ch=="2"){
 			system("pause");
 			system("cls");
 		}else{
-		ofstream writeReport("attendanceReport.txt");
+			ofstream writeReport("attendanceReport.txt",ios::app);
 		ifstream read("student.txt");
 		if(read.is_open()){
 			while(!read.eof()){
@@ -1063,7 +1069,7 @@ else if(ch=="2"){
 				cin>>attendance;
 				if(attendance=="p"||attendance=="P"){
 					p++;
-				}else if(attendance=="a",attendance=="A"){
+				}else if(attendance=="a"||attendance=="A"){
 					a++;
 				}else{
 					l++;
@@ -1084,7 +1090,8 @@ else if(ch=="2"){
             }	
 			}
 			read.close();
-			writeReport<<endl<<courseName<<endl;
+			//courseName=BSSE;//confused loop
+			writeReport<<endl<<"BSSE"<<endl;
 			writeReport<<__DATE__<<endl;
 			writeReport<<p<<endl;
 			writeReport<<a<<endl;
@@ -1111,7 +1118,9 @@ else if(ch=="2"){
 }
 //condition 2 ends
 else if(ch=="3"){
-        
+        p=0;
+        a=0;
+        l=0;
 		ofstream write("attendance.txt" , ios::app);
 	    ifstream readAtt("attendance.txt");
 	    if(readAtt.is_open()){
@@ -1142,7 +1151,7 @@ else if(ch=="3"){
 		
 		ifstream read("student.txt");
 		if(read.is_open()){
-			ofstream writeReport("attendanceReport.txt");
+			ofstream writeReport("attendanceReport.txt",ios::app);
 			while(!read.eof()){
 			read>>regId;
 			read.ignore();
@@ -1161,9 +1170,9 @@ else if(ch=="3"){
                 cout << "Name of student: " << name << endl;
                 cout << "Mark (A/P)     : ";
 				cin>>attendance;
-				 if(attendance=="p"||attendance=="P"){
+				 if(attendance=="p" || attendance=="P"){
 					p++;
-				}else if(attendance=="a",attendance=="A"){
+				}else if(attendance=="a" || attendance=="A"){
 					a++;
 				}else{
 					l++;
@@ -1183,7 +1192,8 @@ else if(ch=="3"){
 
             }	
 			}read.close();
-			writeReport<<endl<<courseName<<endl;
+			//courseName=BSAVM; confused loop:(
+			writeReport<<endl<<"BSAVM"<<endl;
 			writeReport<<__DATE__<<endl;
 			writeReport<<p<<endl;
 			writeReport<<a<<endl;
@@ -1223,16 +1233,16 @@ else if(ch=="4"){
 
 void displayAttendance(){
 	system("cls");
-	cout<<"__________________________"<<endl;
-	cout<<"|___DISPLAY ATTENDANCE___|"<<endl;
-	cout<<"|"<<"1. BSCS "<<"        |"<<endl;
-	cout<<"|"<<"2. BSSE "<<"        |"<<endl;
-	cout<<"|"<<"3. BSAVM"<<"        |"<<endl;
-	cout<<"|"<<"4. BSCS REPORT"<<"  |"<<endl;
-	cout<<"|"<<"5. BSSE REPORT"<<"  |"<<endl;
-	cout<<"|"<<"6. BSAVM Report"<<" |"<<endl;
-	cout<<"|"<<"7. Back "<<"        |"<<endl;
-	cout<<"__________________________"<<endl;
+	cout<<"_____________________________________________"<<endl;
+	cout<<"|*|__________DISPLAY ATTENDANCE___________|*|"<<endl;
+	cout<<"|*|1. BSCS                                |*|"<<endl;
+	cout<<"|*|2. BSSE                                |*|"<<endl;
+	cout<<"|*|3. BSAVM                               |*|"<<endl;
+	cout<<"|*|4. BSCS REPORT                         |*|"<<endl;
+	cout<<"|*|5. BSSE REPORT                         |*|"<<endl;
+	cout<<"|*|6. BSAVM Report                        |*|"<<endl;
+	cout<<"|*|7. Back                                |*|"<<endl;
+	cout<<"|*|_______________________________________|*|"<<endl;
 	string ch;
 	cout<<"Enter your choice : ";
 	cin>>ch;
